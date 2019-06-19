@@ -13,13 +13,13 @@
   	<dependency> 
   		<groupId>es.caib.base</groupId>
   		<artifactId>ProjecteBaseEJB</artifactId>
-  		<version>0.0.1</version>
+  		<version>${modulo.version}</version>
   		<type>ejb</type>
   	</dependency>
   	<dependency>
   		<groupId>es.caib.base</groupId>
   		<artifactId>ProjecteBaseWeb</artifactId>
-  		<version>0.0.1</version>
+  		<version>${modulo.version}</version>
   		<type>war</type>
   	</dependency>
   </dependencies>

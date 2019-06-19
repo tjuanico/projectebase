@@ -6,9 +6,14 @@
   <packaging>pom</packaging>
   <name>ProjecteBase</name>
   <description>Projecte Base</description>
+  <properties>
+  	<jsf.version>2.1.2</jsf.version>
+  	<modulo.version>0.0.1</modulo.version>
+  	<prime-faces.version>6.2</prime-faces.version>
+  </properties>
   <modules>
-  	<module>ProjecteBaseEJB</module>
   	<module>ProjecteBaseWeb</module>
   	<module>ProjecteBaseEAR</module>
+  	<module>ProjecteBaseEJB</module>
   </modules>
 </project>

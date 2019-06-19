@@ -1,12 +1,10 @@
 package es.caib.ProjecteBaseEJB.service;
 
-import javax.ejb.Local;
-import javax.ejb.Stateless;
+import javax.ejb.Stateful;
 
 import es.caib.ProjecteBaseEJB.interfaces.ControladorInterface;
 
-@Stateless(name="ControladorBeanService")
-@Local
+@Stateful
 public class ControladorBeanService implements ControladorInterface {
 
 	@Override
