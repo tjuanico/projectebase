@@ -24,26 +24,34 @@
 		<servlet-name>Faces Servlet</servlet-name>
     	<url-pattern>*.xhtml</url-pattern>
 	</servlet-mapping>
-	<context-param>
+	<!-- servlet-mapping>
+    	<servlet-name>Faces Servlet</servlet-name>
+    	<url-pattern>*.jsf</url-pattern>
+  	</servlet-mapping-->
+	<!--  context-param>
+    	<param-name>javax.faces.PROJECT_STAGE</param-name>
+    	<param-value>Development</param-value>
+    </context-param-->
+	<!-- context-param>
     	<description>State saving method: 'client' or 'server' (=default). See JSF Specification 2.5.2</description>
     	<param-name>javax.faces.STATE_SAVING_METHOD</param-name>
     	<param-value>server</param-value>
-  	</context-param>
-  	<listener>
+  	</context-param-->
+  	<!-- listener>
 		<listener-class>com.sun.faces.config.ConfigureListener</listener-class>
-	</listener>
-	<context-param>
+	</listener-->
+	<!-- context-param>
 		<param-name>javax.faces.DEFAULT_SUFFIX</param-name>
 		<param-value>.xhtml</param-value>
-	</context-param>
-	<context-param>
+	</context-param-->
+	<!-- context-param>
 		<param-name>com.sun.faces.injectionProvider</param-name>
 		<param-value>org.jboss.web.jsf.integration.injection.JBossInjectionProvider</param-value>
-  	</context-param>
-	<context-param>
+  	</context-param-->
+	<!-- context-param>
     	<param-name>org.jboss.jbossfaces.WAR_BUNDLES_JSF_IMPL</param-name>
     	<param-value>true</param-value>
-  	</context-param>
+  	</context-param-->
   	 <filter>
     <filter-name>CharacterEncodingFilter</filter-name>
     <filter-class>es.caib.ProjecteBaseWeb.util.CharacterEncodingFilter</filter-class>
@@ -52,4 +60,26 @@
     <filter-name>CharacterEncodingFilter</filter-name>
     <url-pattern>*.xhtml</url-pattern>
   </filter-mapping>
+  <security-constraint> 
+		<web-resource-collection>
+			<web-resource-name>index.xhtml</web-resource-name>
+			<url-pattern>/admin/*</url-pattern>
+			<http-method>POST</http-method>
+			<http-method>GET</http-method>
+		</web-resource-collection> 
+		<auth-constraint>
+			<role-name>PBASE_ADMIN</role-name>
+			<role-name>JBOSSADMIN</role-name>
+		</auth-constraint>
+  </security-constraint>
+  <login-config>
+		<auth-method>KEYCLOAK</auth-method>
+		<realm-name>Autenticacio</realm-name>
+  </login-config>
+  <security-role>
+		<role-name>PBASE_ADMIN</role-name>
+	</security-role>
+	<security-role>
+		<role-name>JBOSSADMIN</role-name>
+	</security-role>
 </web-app>

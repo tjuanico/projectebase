@@ -6,12 +6,26 @@
       xmlns:p="http://primefaces.org/ui">
 	<h:head>
 		<meta charset="utf-8"/>
-		<title>Hola món</title>
+		<title>Projecte Base - Demo damunt OKD (Openshift lliure)</title>
 	</h:head>
 	<h:body>
-		<h1>Hola a tothom</h1>
-		<p:calendar></p:calendar>
-		<h:outputText value="Holas"></h:outputText>
-		Missatge: #{controlador.missatge}
+		<h1>Projecte Base</h1>
+		<p:panel id="horizontal" header="Elements Primefaces" toggleable="true" toggleOrientation="horizontal">
+			<h:panelGrid columns="2" cellpadding="10">
+				Calendari: <p:calendar></p:calendar>
+				Boto: <p:button value="Bookmark" icon="pi pi-star" style="margin-right:20px;"><f:param name="productId" value="10" /></p:button>
+			</h:panelGrid>
+   		</p:panel>
+   		<p:panel id="horizontal" header="Arquitectura DGTIC OKD" toggleable="true" toggleOrientation="horizontal">
+   			<h:panelGrid columns="1" cellpadding="10">
+   				<ul>
+   					<li>Keycloack, identificacio i roles. Es necessari tenir el role PBASE_ADMIN o JBOSSADMIN al realm i client utilitzat: <a href="/ProjecteBaseWeb/admin">pagina administracio</a></li>
+   					<li>Accedint a base de dades Oracle: <h:outputText value="#{controlador.missatge}" /></li>
+   					<li>Servlet i injeccio de EJB: <a href="/ProjecteBaseWeb/prova">anar-hi</a></li>
+   					<li>Logs</li>
+   					<li>Emmagatzemament de dades</li>
+   				</ul>
+   			</h:panelGrid>
+   		</p:panel>
 	</h:body>
 </html>

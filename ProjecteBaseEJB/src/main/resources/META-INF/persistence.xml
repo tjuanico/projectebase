@@ -4,18 +4,11 @@
              xsi:schemaLocation="http://java.sun.com/xml/ns/persistence
                                  http://java.sun.com/xml/ns/persistence/persistence_2_0.xsd"
              version="2.0"-->
- <persistence xmlns="http://java.sun.com/xml/ns/persistence"
-             xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-             xsi:schemaLocation="http://java.sun.com/xml/ns/persistence
-                                 classpath:/com/sun/faces/web-facesconfig_2_0.xsd"
-             version="2.0">           
-    <persistence-unit name="ProjecteBaseDB_PU" transaction-type="JTA">
-        <jta-data-source>java:/ProjecteBaseDS</jta-data-source>
-        <properties>
-            <property name="hibernate.dialect" value="org.hibernate.dialect.PostgreSQLDialect"/> <!-- DB Dialect -->
-            <property name="hibernate.hbm2ddl.auto" value="validate" /> <!-- create / create-drop / update -->
-            <property name="hibernate.show_sql" value="true" /> <!-- Show SQL in console -->
-            <property name="hibernate.format_sql" value="true" /> <!-- Show SQL formatted -->
-        </properties>
-    </persistence-unit>
+ <persistence xmlns="http://java.sun.com/xml/ns/persistence" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://java.sun.com/xml/ns/persistence classpath:/com/sun/faces/web-facesconfig_2_0.xsd" version="2.0">
+        	<persistence-unit name="ProjecteBaseDS" transaction-type="JTA">
+        	<jta-data-source>java:jboss/datasources/ProjecteBaseDS</jta-data-source>
+        	<properties>
+            	<property name="hibernate.dialect" value="org.hibernate.dialect.OracleDialect"/> 
+        	</properties>
+    	</persistence-unit>
 </persistence>

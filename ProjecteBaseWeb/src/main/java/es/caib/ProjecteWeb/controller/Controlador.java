@@ -8,13 +8,18 @@ import javax.faces.bean.ViewScoped;
 import org.apache.log4j.Logger;
 
 import es.caib.ProjecteBaseEJB.interfaces.ControladorInterface;
+import es.caib.ProjecteBaseEJB.interfaces.CentreServiceInterface;
 
 @ManagedBean
 @ViewScoped
 public class Controlador {
 
-	@EJB(mappedName="es.caib.ProjecteBaseEJB.service.ControladorBeanService")
+	@EJB
 	private ControladorInterface myController;
+	
+	@EJB
+	private CentreServiceInterface myCentreService;
+	
 	
 	private final static Logger LOGGER = Logger.getLogger(Controlador.class);
 	private String message = new String("Pep");
@@ -29,11 +34,21 @@ public class Controlador {
 	{ 
 		try {
 			Integer resultat = myController.suma(2, 3);
-			return message + resultat.toString(); 	
+			message =  message + resultat.toString(); 	
+		}
+		catch (Exception ex) {
+			return ex.toString();
+		} 
+		
+		try {
+			String resultat = myCentreService.getCentre();
+			message = message + "Prova de connexio a bbdd --> " + resultat.toString(); 	
 		}
 		catch (Exception ex) {
 			return ex.toString();
 		}
+		
+		return message;
 		
 	}
 	
