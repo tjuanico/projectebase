@@ -23,6 +23,22 @@
 		<servlet-name>Dead</servlet-name>
 		<url-pattern>/dead</url-pattern>
 	</servlet-mapping>
+	<servlet>
+    	<servlet-name>Health</servlet-name>
+    	<servlet-class>es.caib.ProjecteBaseWeb.Health</servlet-class>
+	</servlet>
+	<servlet-mapping>
+		<servlet-name>Health</servlet-name>
+		<url-pattern>/health</url-pattern>
+	</servlet-mapping>
+	<servlet>
+    	<servlet-name>Log</servlet-name>
+    	<servlet-class>es.caib.ProjecteBaseWeb.Log</servlet-class>
+	</servlet>
+	<servlet-mapping>
+		<servlet-name>Log</servlet-name>
+		<url-pattern>/log</url-pattern>
+	</servlet-mapping>
   	<servlet>
     	<servlet-name>Faces Servlet</servlet-name>
     	<servlet-class>javax.faces.webapp.FacesServlet</servlet-class>
@@ -40,11 +56,19 @@
     	<param-name>javax.faces.PROJECT_STAGE</param-name>
     	<param-value>Development</param-value>
     </context-param-->
-	<!-- context-param>
+	<context-param>
     	<description>State saving method: 'client' or 'server' (=default). See JSF Specification 2.5.2</description>
     	<param-name>javax.faces.STATE_SAVING_METHOD</param-name>
-    	<param-value>server</param-value>
-  	</context-param-->
+    	<param-value>client</param-value>
+  	</context-param>
+  	<context-param>
+	    <param-name>primefaces.PUBLIC_CAPTCHA_KEY</param-name>
+	    <param-value>armageddon12345</param-value>
+	</context-param>
+	<context-param>
+	    <param-name>primefaces.PRIVATE_CAPTCHA_KEY</param-name>
+	    <param-value>54321noddegamra</param-value>
+	</context-param>
   	<!-- listener>
 		<listener-class>com.sun.faces.config.ConfigureListener</listener-class>
 	</listener-->
@@ -70,24 +94,54 @@
   </filter-mapping>
   <security-constraint> 
 		<web-resource-collection>
-			<web-resource-name>index.xhtml</web-resource-name>
+			<web-resource-name>admin</web-resource-name>
 			<url-pattern>/admin/*</url-pattern>
 			<http-method>POST</http-method>
 			<http-method>GET</http-method>
 		</web-resource-collection> 
 		<auth-constraint>
-			<role-name>PBASE_ADMIN</role-name>
-			<role-name>JBOSSADMIN</role-name>
+			<role-name>AVE_ADMINISTRACION</role-name>
+		</auth-constraint>
+  </security-constraint>
+  <security-constraint> 
+		<web-resource-collection>
+			<web-resource-name>admin_root</web-resource-name>
+			<url-pattern>/admin_root/*</url-pattern>
+			<http-method>POST</http-method>
+			<http-method>GET</http-method>
+		</web-resource-collection> 
+		<auth-constraint>
+			<role-name>AVE_ADMINISTRACION</role-name>
+		</auth-constraint>
+  </security-constraint>
+    <security-constraint> 
+		<web-resource-collection>
+			<web-resource-name>radarcovback</web-resource-name>
+			<url-pattern>/radarcovback/*</url-pattern>
+			<http-method>POST</http-method>
+			<http-method>GET</http-method>
+		</web-resource-collection> 
+		<auth-constraint>
+			<role-name>RDV_USUARI</role-name>
+			<role-name>RDV_ADMIN</role-name>
 		</auth-constraint>
   </security-constraint>
   <login-config>
 		<auth-method>KEYCLOAK</auth-method>
-		<realm-name>Autenticacio</realm-name>
+		<realm-name>CAIB</realm-name>
   </login-config>
-  <security-role>
-		<role-name>PBASE_ADMIN</role-name>
+	<security-role>
+		<role-name>AVE_ADMINISTRACION</role-name>
 	</security-role>
 	<security-role>
-		<role-name>JBOSSADMIN</role-name>
+		<role-name>RDV_USUARI</role-name>
 	</security-role>
+	<security-role>
+		<role-name>RDV_ADMIN</role-name>
+	</security-role>
+	<env-entry>
+		<env-entry-name>jsf/ClientSideSecretKey</env-entry-name>
+		<env-entry-type>java.lang.String</env-entry-type>
+		<env-entry-value>JcNqcA0eFMFHYoNnrDpb0e6+o/1TfAAh926mIFhSd44=</env-entry-value>
+	</env-entry>
 </web-app>

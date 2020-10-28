@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" 
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+	  xmlns:f="http://java.sun.com/jsf/core" 
+	  xmlns:h="http://java.sun.com/jsf/html"
+	  xmlns:p="http://primefaces.org/ui">
+	<ui:composition template="/WEB-INF/facelets/templates/defaultLayout.xhtml">
+	   <ui:define name="title">
+	      Reserva Torn BenchMark - Eines RAD COVID19 2020 - CAIB2020
+	   </ui:define>
+	   <ui:define name="content">
+	     <h:form accept-charset="UTF-8">
+			<!-- Contigut-->
+			<p:panel id="principal" header="Reserva satisfactoria" footer="" style="margin-bottom:20px">
+				<p:messages id="messages" severity="error" showDetail="true" globalOnly="false"/>
+				<p:outputPanel deferred="false" deferredMode="visible">
+			    	<div class='row-form'>
+			    		<h3>La reserva <h:outputText value="#{reservatornController.tornid}" /> s'ha fet correctament!!</h3>
+			    		<p>NIF / CIF / NIE: <h:outputText value="#{reservatornController.identificacio}" /></p>
+			    		<p>Nom: <h:outputText value="#{reservatornController.nom}" /></p>
+			    		<p>Primer llinatge: <h:outputText value="#{reservatornController.llinatge1}" /></p>
+			    		<p>Segon llinatge: <h:outputText value="#{reservatornController.llinatge2}" /></p>
+			    		<p>Illa: <h:outputText value="#{reservatornController.illa}" /></p>
+			    		<p>Municipi: <h:outputText value="#{reservatornController.municipi}" /></p>
+			    		<p>Tipus autonom: <h:outputText value="#{reservatornController.tautonom}" /></p>
+			    		<br/>
+			    		<p>Has desat: <h:outputText value="#{reservatornController.hash}" /></p>
+			    		<p>Hash rebut: <h:outputText value="#{reservatornController.hash}" /></p>
+			    		<p>Host name: <h:outputText value="#{reservatornController.hostid}" /></p>
+			    		
+			    	</div>
+				</p:outputPanel>
+			</p:panel>
+		</h:form>
+		</ui:define>
+    </ui:composition>
+</html>

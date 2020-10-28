@@ -1,0 +1,78 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" 
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+	  xmlns:f="http://java.sun.com/jsf/core" 
+	  xmlns:h="http://java.sun.com/jsf/html"
+	  xmlns:p="http://primefaces.org/ui">
+	
+	<ui:composition template="/WEB-INF/facelets/templates/defaultLayout.xhtml">
+	   <ui:define name="title">
+	      Radarcov
+	   </ui:define>
+	   <ui:define name="content">
+	     <h:form>
+	     	<p:growl id="messages"/>
+			<!-- Contigut-->
+			<p:panel id="principal" header="RADARCOV - Instruccions obtenció codis per l'aplicació Radar COVID del Ministeri" footer="" style="margin-bottom:20px">
+			    <table cellpsacing='1' cellpadding='4' border='0'>
+			    	<tr>
+			    		<td valign='top'>
+						    <p>Els codis de l'aplicatiu <b>Radar COVID del Ministeri</b> obtinguts amb la implementació del <b>GOIB</b> només s'han de donar a pacients:</p>
+							<ul>
+								<li>Amb resultats de test COVID-19 positius confirmats</li>
+								<li>Altres criteris addicionals, com són diagnòstics confirmats</li>
+							</ul>
+							<p>Assegura't que el pacient té instal·lada l'aplicació Radar COVID al seu mòbil.<br/>
+			            		En cas contrari el pacient pot visitar l'Apple Store (iPhone) o el Google Play (Android) per instal·lar l'aplicació.
+			    			</p>
+			    			<p>
+								Ajuda al pacient a seguir les passes següents:<br/>
+			    				<ol>
+			    					<li>Obrir l'aplicació Radar COVID instal·lada al seu mòbil pitjant damunt la icona</li>
+			    					<li>Prémer damunt la pestanya "Comunica tu positivo COVID-19"</li>
+			    					<li>Introduir el codi de 12 dígits obtingut</li>
+			    					<li>Llegir l'advertència i pitjar a "Enviar diagnóstico anónimo"</li>
+			    				</ol>
+			     				El codi de 12 dígits per al pacient l'obtindràs a continuació:
+			     			</p>
+			     			<table cellspacing='5' cellpadding='10' border='0'>
+			     				<tr>
+			     					<td>
+			     						<p:inputText id="codiObtingut" value="#{indexRadarController.codi}" required="false" />
+			     						<p:commandButton value="Obtenir codi" id="getCode" update="messages,codiObtingut" action="#{indexRadarController.obtenirCodi}" style="margin-right:20px;" styleClass="ui-priority-primary" />
+			     			
+			     						<p:inputText id="telefonPacient" value="#{indexRadarController.telefon}" required="false" />
+			     						<p:commandButton value="Enviar SMS" id="enviarsmsId" update="messages" action="#{indexRadarController.enviarSms}" style="margin-right:20px;" styleClass="ui-priority-primary" />
+			     					</td>
+			     				</tr>
+			     				<tr>
+			     					<td><p:commandButton value="Nou pacient" id="noupacient" update="messages,codiObtingut,telefonPacient" action="#{indexRadarController.nouPacient}" style="margin-right:20px;" styleClass="ui-priority-primary" /></td>
+			     				</tr>
+			     			</table>
+			     			<p>Microsite d'informació: <a href="http://www.caib.es/sites/radarcovid/es/radar_covid/?campa=yes">Radarcovid GOIB</a></p>
+			    		</td>
+			    		<td>
+			    			<table cellspacing='5' cellpadding='10' border='0'>
+    							<tr>
+    								<td><img src="/ProjecteBaseWeb/resources/images/radarcov1.jpg" width='202' height='450' border='0' alt='Radarcov'></img></td>
+    								<td><img src="/ProjecteBaseWeb/resources/images/radarcov2.jpg" width='202' height='450' border='0' alt='Radarcov'></img></td>
+    							</tr>
+    						</table>
+			    		</td>
+			    	</tr>
+			    </table>
+    		</p:panel>
+    		<p:panel id="panelStatistics" deferred="true" deferredMode="visible" header="Estadístiques" footer="" style="margin-bottom:20px" rendered="#{request.isUserInRole('RDV_ADMIN')}">
+    				<p:outputPanel deferred="true" deferredMode="visible" id="estadisticas">
+     					<p>Núm. codis servits: #{indexRadarController.numservits}</p>
+     					<p>Data darrer codi servit: #{indexRadarController.dataservit}</p>
+     					<p>Núm. codis disponibles: #{indexRadarController.numdisponibles}</p>
+     					<p>Data baixada darrer lot de codis disponibles: #{indexRadarController.datadisponible}</p>
+     				</p:outputPanel>
+     				<p><p:commandButton value="Refrescar estadístiques" id="refreshStatistics" update="messages,estadisticas" action="#{indexRadarController.obteEstadistiques}" style="margin-right:20px;" styleClass="ui-priority-primary" /></p>
+    		</p:panel>
+		</h:form>
+		</ui:define>
+    </ui:composition>
+</html>

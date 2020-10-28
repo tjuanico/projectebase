@@ -11,4 +11,10 @@
             	<property name="hibernate.dialect" value="org.hibernate.dialect.OracleDialect"/> 
         	</properties>
     	</persistence-unit>
+    	<persistence-unit name="radarcovidDS" transaction-type="JTA">
+        	<jta-data-source>java:jboss/datasources/RadarCovidDS</jta-data-source>
+        	<properties>
+            	<property name="hibernate.dialect" value="org.hibernate.dialect.OracleDialect"/> 
+        	</properties>
+    	</persistence-unit>
 </persistence>

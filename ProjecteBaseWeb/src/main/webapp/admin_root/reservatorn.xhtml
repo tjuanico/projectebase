@@ -1,0 +1,135 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" 
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+	  xmlns:f="http://java.sun.com/jsf/core" 
+	  xmlns:h="http://java.sun.com/jsf/html"
+	  xmlns:p="http://primefaces.org/ui">
+	<ui:composition template="/WEB-INF/facelets/templates/defaultLayout.xhtml">
+	   <ui:define name="title">
+	      Reserva Torn BenchMark - Eines RAD COVID19 2020 - CAIB2020
+	   </ui:define>
+	   <ui:define name="content">
+	   <script src="https://www.google.com/recaptcha/api.js" async="async" defer="defer"></script>
+	   <script type="text/javascript">
+	      function valida(){
+	    	  r = grecaptcha.getResponse();
+	    	  if (r=='')
+	    	  {
+	    		  alert("Ha de respondre el captcha");
+	    		  return false;
+	    	  }
+	    	  else
+	    	  {
+	    		  //alert(r);
+	    		  return true;
+	    	  }
+	      }
+	      
+	   </script>
+	     <h:form accept-charset="UTF-8">
+			<!-- Contigut-->
+			<p:panel id="principal" header="Reserva Torn per tràmit telemàtic Ajuds autònoms COVID19" footer="" style="margin-bottom:20px">
+				<p:messages id="messages" severity="error" showDetail="true" globalOnly="false"/>
+				<p:outputPanel deferred="false" deferredMode="visible">
+			    	<div class='row-form'>
+			    		<h2>Dades de l'interessat</h2>
+			    		<div class='row-form'>
+			    			<div class='col-form-etiqueta'>DNI / NIF / NIE *</div> 
+			    			<div class='col-form'>
+			    				<p:inputText id="identificacio" value="#{reservatornController.identificacio}" required="true" requiredMessage="S'ha d'indicar el dni / nif / nie de l'interessat" maxlength="255" style="width:450px"></p:inputText>
+			    			</div>
+			    			<div class='col-form'>
+				    			<p:message id="m_identificacio" for="identificacio" showDetail="true"></p:message>
+				    		</div>
+				    	</div>
+			    		<div class='row-form'>
+			    			<div class='col-form-etiqueta'>Nom *</div> 
+			    			<div class='col-form'>
+			    				<p:inputText id="nom" value="#{reservatornController.nom}" required="true" requiredMessage="S'ha d'indicar el nom de l'interessat" maxlength="255" style="width:450px"></p:inputText>
+			    			</div>
+			    			<div class='col-form'>
+				    			<p:message id="m_nom" for="nom" showDetail="true"></p:message>
+				    		</div>
+				    	</div>
+			    		<div class='row-form'>
+							<div class='col-form-etiqueta'>Primer llinatge *</div>
+			    			<div class='col-form'>
+			    				<p:inputText id="llinatge1" value="#{reservatornController.llinatge1}" required="true" requiredMessage="S'ha d'indicar el primer llinatge de l'interessat" maxlength="255" style="width:450px"></p:inputText>
+			    			</div>
+			    			<div class='col-form'>
+				    			<p:message id="m_llinatge1" for="llinatge1" showDetail="true"></p:message>
+				    		</div>			    		
+			    		</div>
+			    		<div class='row-form'>
+							<div class='col-form-etiqueta'>Segon llinatge *</div>
+			    			<div class='col-form'>
+			    				<p:inputText id="llinatge2" value="#{reservatornController.llinatge2}" required="true" requiredMessage="S'ha d'indicar el segon llinatge de l'interessat" maxlength="255" style="width:450px"></p:inputText>
+			    			</div>	
+			    			<div class='col-form'>
+				    			<p:message id="m_llinatge2" for="llinatge2" showDetail="true"></p:message>
+				    		</div>		    		
+			    		</div>
+			    		<div class='row-form'>
+							<div class='col-form-etiqueta'>Illa *</div>
+			    			<div class='col-form'>
+				    			<p:selectOneMenu id="illa" value="#{reservatornController.illa}" size="60">
+								<f:selectItem itemLabel="Selecciona l'illa" itemValue="#{null}"  />
+                                 <f:selectItems value="#{reservatornController.llista_Illes}" var="illa" itemLabel="#{illa.nom}" itemValue="#{illa.id}" />
+							</p:selectOneMenu>
+				    		</div>	
+			    		</div>
+			    		<div class='row-form'>
+							<div class='col-form-etiqueta'>Municipi *</div>
+			    			<div class='col-form'>
+				    			<p:selectOneMenu id="municipi" value="#{reservatornController.municipi}" size="60">
+								<f:selectItem itemLabel="Selecciona municipi" itemValue="#{null}"  />
+                                 <f:selectItems value="#{reservatornController.llista_Municipis}" var="municipi" itemLabel="#{municipi.nom}" itemValue="#{municipi.id}" />
+							</p:selectOneMenu>	    
+							</div>		
+			    		</div>
+			    		<div class='row-form'>
+							<div class='col-form-etiqueta'>Tipus autònom *</div>
+			    			<div class='col-form'>
+			    				<p:selectOneMenu id="tautonom" value="#{reservatornController.tautonom}" size="60">
+								<f:selectItem itemLabel="Selecciona tipus autonom" itemValue="#{null}"  />
+                                 <f:selectItems value="#{reservatornController.llista_Tautonom}" var="tautonom" itemLabel="#{tautonom.nom}" itemValue="#{tautonom.id}" />
+							</p:selectOneMenu>	  
+				    		</div>		    		
+			    		</div>
+			    		<div class='row-form'>
+			    		    <p><h:outputText value="#{reservatornController.captcha}"/></p>
+			    		    <div class="g-recaptcha" data-sitekey="6LdZdqYZAAAAALG3XTjw5QsWxs6-U4dkvoMkhvkV"></div>
+			    		</div>
+                        
+			    	</div>
+			    	
+				</p:outputPanel>
+				<div style="height:25px"></div>
+    			<div class='boto-formulari'>
+   					<p:commandButton value="Desa" icon="ui-icon-check" onclick="return valida();" ajax="false" action="#{reservatornController.addtorn}" update="growl"  validateClient="true"/>
+   				</div>
+   				<div>
+   					<p>Host name: <h:outputText value="#{reservatornController.hostid}" /></p>
+   				</div>
+   				<div>
+   				<b>Informació en relació al tractament de dades personals</b><br/>
+   				El Govern de les Illes Balears garanteix la confidencialitat i la protecció de les dades personals que es faciliten a través de les pàgines d'aquest web en el termes que estableix el Reglament UE 2016/679 de Protecció de Dades, la Llei Orgànica 3/2018, de 5 de desembre, de protecció de dades personals i garantia dels drets digitals i la resta de legislació vigent en matèria de protecció de dades.<br/>
+
+Informació en relació al tractament de dades personals<br/>
+
+— Responsable del tractament: Conselleria de Model Econòmic, Turisme i Treball<br/> 
+— Finalitat del tractament: Gestió de cites per rebre l'ajud per autònims COVID19 de la Comunitat Autònoma de les Illes Balears<br/> 
+— Legitimació: El compliment d’una missió realitzada en interès públic o en l’exercici de poders públics conferits al responsable del tractament mitjançant la Llei 3/2003, de 26 de novembre, de règim jurídic de l’Administració de la comunitat autònoma de les Illes Balears<br/>
+— Destinataris de les dades personals: Direcció General de Promoció Econòmica, Emprenedoria i Economia Social i Circular<br/>
+— Termini de conservació de les dades personals: Les dades es conservaran el temps necessari per poder dur a terme la finalitat del tractament.<br/>
+— Existència de decisions automatitzades: No es realitzarà presa de decisions automatitzades basades en la informació que vostè ens proporciona.<br/>
+— Exercici de drets i reclamacions: La persona afectada pel tractament de dades personals pot exercir els seus drets d'informació, d'accés, de rectificació, de supressió, de limitació, de portabilitat, d'oposició i de no inclusió en tractaments automatitzats (i, fins i tot, de retirar el consentiment, si és el cas, en els termes que estableix el RGPD) davant el responsable del tractament, mitjançant el procediment «Sol·licitud d'exercici de drets en matèria de protecció de dades personals», previst en la seu electrònica de la CAIB (seu electrònica).<br/>
+Amb posterioritat a la resposta del responsable o al fet que no hi hagi resposta en el termini d'un mes, pot presentar la «Reclamació de tutela de drets» davant l'Agència Espanyola de Protecció de Dades (AEPD).<br/>
+— Delegació de Protecció de Dades: la Delegació de Protecció de Dades de l’Administració de la CAIB té la seu a la Conselleria de Presidència, Cultura i Igualtat (passeig de Sagrera, 2, 07012 Palma). Adreça electrònica de contacte: protecciodades@dpd.caib.es.<br/>
+   				</div>
+			</p:panel>
+		</h:form>
+		</ui:define>
+    </ui:composition>
+</html>
