@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.Base64;
 import java.util.Date;
 import java.util.List;
+import java.util.Properties;
 
 import javax.annotation.PostConstruct;
 import javax.annotation.security.RolesAllowed;
@@ -18,7 +19,9 @@ import es.caib.ProjecteBaseEJB.entity.CodiPlexus;
 import es.caib.ProjecteBaseEJB.interfaces.CodiPlexusServiceInterface;
 
 import java.io.BufferedReader;
+import java.io.FileInputStream;
 import java.io.IOException;
+import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.io.UnsupportedEncodingException;
 import java.math.BigDecimal;
@@ -51,7 +54,6 @@ public class CodiPlexusService implements CodiPlexusServiceInterface {
 	
 	@PostConstruct
 	public void init() {
-		LOGGER.info("Proxy a entityManager: "+this.em);
 	}
 	
 	public boolean getResultat() { return this.resultat; }
@@ -62,8 +64,6 @@ public class CodiPlexusService implements CodiPlexusServiceInterface {
 	// Obte el numero de codis disponibles
 	@Override
 	public int getNumDisponibles() {
-		LOGGER.info("in getNumDisponibles, estat entity manager: " + em.toString());
-		
 		String strQuery = "select count(*) from rdv_downloaded_access_code where activated_at is null";
 		        
         try {
@@ -71,8 +71,6 @@ public class CodiPlexusService implements CodiPlexusServiceInterface {
         	Query myQuery = em.createNativeQuery(strQuery);
         	BigDecimal num = (BigDecimal) myQuery.getSingleResult();
         	
-        	LOGGER.info("Num disponibles: " + num);
-		
         	return num.intValue(); 
         		
         }
@@ -89,34 +87,28 @@ public class CodiPlexusService implements CodiPlexusServiceInterface {
 	@Override
 	public int getNumServits()
 	{
-		LOGGER.info("in getNumServits, estat entity manager: " + em.toString());
 			
-	   String strQuery = "select count(*) from rdv_downloaded_access_code where activated_at is not null";
+		String strQuery = "select count(*) from rdv_downloaded_access_code where activated_at is not null";
 	        
-	        try {
-	        	
-	        	Query myQuery = em.createNativeQuery(strQuery);
-	        	BigDecimal num = (BigDecimal) myQuery.getSingleResult();
-	        	
-	        	LOGGER.info("Num servits: " + num);
-			
-	        	return num.intValue(); 
+	    try {
+	    	Query myQuery = em.createNativeQuery(strQuery);
+	        BigDecimal num = (BigDecimal) myQuery.getSingleResult();
+	        			
+	        return num.intValue(); 
 	        		
-	        }
-			catch (Exception ex)
-			{
-				LOGGER.error(ex);
-				this.resultat = false;
-				this.strError = ex.toString(); 
-				return 0;
-			}
+	    }
+		catch (Exception ex)
+		{
+			LOGGER.error(ex);
+			this.resultat = false;
+			this.strError = ex.toString(); 
+			return 0;
+		}
 	}
 	
 	// Obte la data del darrer codi servit
 	@Override
 	public Date getDataDarrerServit() {
-		
-		LOGGER.info("in getDataDarrerServit, estat entity manager: " + em.toString());
 		
 		String strQuery = "select max(activated_at) from rdv_downloaded_access_code where activated_at is not null";
 		        
@@ -125,8 +117,6 @@ public class CodiPlexusService implements CodiPlexusServiceInterface {
         	Query myQuery = em.createNativeQuery(strQuery);
         	Date data = (Date) myQuery.getSingleResult();
         	
-        	LOGGER.info("data darrer servit: " + data.toString());
-		
         	return data; 
         		
         }
@@ -142,8 +132,7 @@ public class CodiPlexusService implements CodiPlexusServiceInterface {
 	// Obte la data del darrer lot baixat
 	@Override
 	public Date getDataDarrerLotBaixat() {
-		LOGGER.info("in getDataDarrerLotBaixat, estat entity manager: " + em.toString());
-		
+				
 		String strQuery = "select max(created_at) from rdv_downloaded_access_code";
 		        
         try {
@@ -151,8 +140,6 @@ public class CodiPlexusService implements CodiPlexusServiceInterface {
         	Query myQuery = em.createNativeQuery(strQuery);
         	Date data = (Date) myQuery.getSingleResult();
         	
-        	LOGGER.info("data darrer servit: " + data.toString());
-		
         	return data; 
         		
         }
@@ -168,8 +155,7 @@ public class CodiPlexusService implements CodiPlexusServiceInterface {
 	// Obte el seguent codi i el marca com a proporcionat
 	@Override
 	public String getNextCodi() {
-		LOGGER.info("in getNextCodi, estat entity manager: " + em.toString());
-		
+				
         String strQuery = "select id,access_code from rdv_downloaded_access_code where activated_at is null and rownum=1 for update";
         
         try {
@@ -185,13 +171,10 @@ public class CodiPlexusService implements CodiPlexusServiceInterface {
 		         codigo = (String) ret[1];
         	}
         	
-        	LOGGER.info("Obtingut codi: " + codigo + ", obtingut val: " + id_unico);
-		
         	if (id_unico != null) 
         	{
 			
         		strQuery = "update rdv_downloaded_access_code set activated_at=sysdate where id=" + id_unico;
-        		LOGGER.info("query update: " + strQuery);
         		myQuery = em.createNativeQuery(strQuery);
         		myQuery.executeUpdate();
         		this.resultat = true;
@@ -227,37 +210,55 @@ public class CodiPlexusService implements CodiPlexusServiceInterface {
 	public void enviarSms(String telefon, String codigo)
 	{
 		
-		String user = new String("jorge.sanchezferreiro@plexus.es");
-		String password = new String("Tecnocrata-666");
-		String resultat = new String("");
+		String pathFitxerPropietats = System.getProperty("fitxer.propietats");
 		
 		try {
-		  String encode_message = new String("");
-		  encode_message = this.encodeValue("RADARCOV GOIB, el seu codi app: " + codigo);
-          URL url = new URL("http://bitsms.fundaciobit.org/bitsms/MensajeEnviar?remitente=APPCOVID&numero=" + telefon + "&texto="+encode_message+"&idCampanya=APPCOVID");
-          HttpURLConnection conn = (HttpURLConnection) url.openConnection();
-          conn.setRequestMethod("GET");
-          
-          String auth = user + ":" + password;
-      	  byte[] encodedAuth = Base64.getEncoder().encode(auth.getBytes(StandardCharsets.UTF_8));
-      	  
-      	  String authHeaderValue = "Basic " + new String(encodedAuth);
-      	  conn.setRequestProperty("Authorization", authHeaderValue);
-      	  
-	      conn.setRequestProperty("Connection", "close");
-	      
-	      if (conn.getResponseCode() != 200) {
-				throw new RuntimeException("Failed : HTTP error code : "
-						+ conn.getResponseCode());
-		  }
+		
+			InputStream input = new FileInputStream(pathFitxerPropietats);
+			Properties prop = new Properties();
+			prop.load(input);
+						
+			String user = prop.getProperty("es.caib.fundaciobit.user");
+			String password = prop.getProperty("es.caib.fundaciobit.pass");
+			String encode_message = this.encodeValue(prop.getProperty("es.caib.fundaciobit.msg") +" " + codigo);
+			String strUrl = prop.getProperty("es.caib.fundaciobit.url-sms"); 
+			
+			//String pathMagatzemJks = prop.getProperty("magatzemjks.path"); 
+			//String passMagatzemJks = prop.getProperty("magatzemjks.pass"); 
+			
+			//System.setProperty("javax.net.ssl.trustStore",pathMagatzemJks);
+			//System.setProperty("javax.net.ssl.trustStorePassword",passMagatzemJks);
+			
+			strUrl = strUrl +"?remitente=APPCOVID&numero=" + telefon + "&texto="+ encode_message +"&idCampanya=APPCOVID";
+			URL url = new URL(strUrl);
+			HttpURLConnection conn = (HttpURLConnection) url.openConnection();
+			conn.setRequestMethod("GET");
+						
+			String auth = user + ":" + password;
+			byte[] encodedAuth = Base64.getEncoder().encode(auth.getBytes(StandardCharsets.UTF_8));
+			String authHeaderValue = "Basic " + new String(encodedAuth);
+			conn.setRequestProperty("Authorization", authHeaderValue);
+			conn.setRequestProperty("Connection", "close");
+				
+			String mask_telf = new String(""); 
+			if (telefon.length()>=9)
+				mask_telf = telefon.substring(6,9);
+			
+			LOGGER.info("send sms xxxxxx" + mask_telf); // Emmascaram telefon per tenir un log d'enviament sms
+			
+			if (conn.getResponseCode() != 200) {
+				throw new RuntimeException("Failed : HTTP error code : " + conn.getResponseCode());
+			}
 	                    
-		  BufferedReader br = new BufferedReader(new InputStreamReader(
-				(conn.getInputStream())));
+			BufferedReader br = new BufferedReader(new InputStreamReader(
+					(conn.getInputStream())));
 
 			String output;
+			StringBuilder response = new StringBuilder("");
 			while ((output = br.readLine()) != null) {
-				resultat = output;				
+				response.append(output);				
 			}
+			LOGGER.info("response sms service: " + response.toString());
 
 			conn.disconnect();
 			this.resultat = true;
@@ -273,12 +274,21 @@ public class CodiPlexusService implements CodiPlexusServiceInterface {
 		
 	}
 	
+	// TODO: funció no implementada i que s'ha de parametritzar...
 	@Override
 	public void bulkCodi() {
 		// Llançar Tx contra Ministeri
-			try {
-			  System.setProperty("javax.net.ssl.trustStore","/app/caib/radarcov/prueba.jks");
-			  System.setProperty("javax.net.ssl.trustStorePassword","changeit");
+		String pathFitxerPropietats = System.getProperty("fitxer.propietats");
+		try {
+			InputStream input = new FileInputStream(pathFitxerPropietats);
+			Properties prop = new Properties();
+			prop.load(input);
+				
+				String pathMagatzemJks = prop.getProperty("magatzemjks.path"); 
+				String passMagatzemJks = prop.getProperty("magatzemjks.pass"); 
+				
+			  System.setProperty("javax.net.ssl.trustStore",pathMagatzemJks);
+			  System.setProperty("javax.net.ssl.trustStorePassword",passMagatzemJks);
 			  //TokenService ts = new TokenService();
 			  String tokenJWT 	= new String("");
 			  //ts.generaToken();

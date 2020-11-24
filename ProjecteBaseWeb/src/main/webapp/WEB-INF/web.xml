@@ -31,14 +31,6 @@
 		<servlet-name>Health</servlet-name>
 		<url-pattern>/health</url-pattern>
 	</servlet-mapping>
-	<servlet>
-    	<servlet-name>Log</servlet-name>
-    	<servlet-class>es.caib.ProjecteBaseWeb.Log</servlet-class>
-	</servlet>
-	<servlet-mapping>
-		<servlet-name>Log</servlet-name>
-		<url-pattern>/log</url-pattern>
-	</servlet-mapping>
   	<servlet>
     	<servlet-name>Faces Servlet</servlet-name>
     	<servlet-class>javax.faces.webapp.FacesServlet</servlet-class>

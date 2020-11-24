@@ -13,6 +13,7 @@
   </properties>
   <modules>
   	<module>ProjecteBaseWeb</module>
+  	<module>ProjecteBase-api</module>
   	<module>ProjecteBaseEAR</module>
   	<module>ProjecteBaseEJB</module>
   </modules>

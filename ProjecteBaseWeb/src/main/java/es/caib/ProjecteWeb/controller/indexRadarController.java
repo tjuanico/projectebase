@@ -66,12 +66,17 @@ public class indexRadarController {
 	// Methods
 	@PostConstruct
 	public void init() {
-			LOGGER.info("Proxy a indexController ");
 			HttpServletRequest origRequest = (HttpServletRequest)FacesContext.getCurrentInstance().getExternalContext().getRequest();
+			String usuari = origRequest.getUserPrincipal().getName();
 			if (origRequest.isUserInRole("RDV_ADMIN"))
 			{
-				LOGGER.info("Usuari amb role RDV_ADMIN ");
+				
+				LOGGER.info("user logged " + usuari + " amb role RDV_ADMIN ");
 				obteEstadistiques();
+			}
+			else
+			{
+				LOGGER.info("user logged " + usuari);
 			}
 	}
 	
@@ -175,11 +180,8 @@ public class indexRadarController {
 	public void obtenirCodi()
 	{
 					
-		LOGGER.info("obtenirCodi.");
-			
 		try
 		{
-			LOGGER.info("EJB lookup "+ CodiServ);	
 				
 			String codigo = CodiServ.getNextCodi(); // Cridem l'EJB
 			
