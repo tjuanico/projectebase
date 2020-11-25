@@ -30,6 +30,7 @@ import java.net.MalformedURLException;
 import java.net.URL;
 import java.net.URLEncoder;
 import java.nio.charset.StandardCharsets;
+import java.text.SimpleDateFormat;
 import java.net.Proxy;
 import java.net.InetSocketAddress;
 import java.net.ProxySelector;
@@ -106,6 +107,30 @@ public class CodiPlexusService implements CodiPlexusServiceInterface {
 		}
 	}
 	
+	// Obte el numero de codis servits o proporcionats a una data determinada
+	// data: dd/MM/yyyy HH:mm
+		@Override
+		public int getNumServitsByDate(String strData)
+		{
+				
+			String strQuery = "select count(*) from rdv_downloaded_access_code where activated_at is not null and activated_at < to_date('"+ strData +"','dd/MM/yyyy HH24:MI')";
+		        
+		    try {
+		    	Query myQuery = em.createNativeQuery(strQuery);
+		        BigDecimal num = (BigDecimal) myQuery.getSingleResult();
+		        			
+		        return num.intValue(); 
+		        		
+		    }
+			catch (Exception ex)
+			{
+				LOGGER.error(ex);
+				this.resultat = false;
+				this.strError = ex.toString(); 
+				return 0;
+			}
+		}
+		
 	// Obte la data del darrer codi servit
 	@Override
 	public Date getDataDarrerServit() {
@@ -210,7 +235,7 @@ public class CodiPlexusService implements CodiPlexusServiceInterface {
 	public void enviarSms(String telefon, String codigo)
 	{
 		
-		String pathFitxerPropietats = System.getProperty("fitxer.propietats");
+		String pathFitxerPropietats = System.getProperty("es.caib.projectebase.properties.path");
 		
 		try {
 		

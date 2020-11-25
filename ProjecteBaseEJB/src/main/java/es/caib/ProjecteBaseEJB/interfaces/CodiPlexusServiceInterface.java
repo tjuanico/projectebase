@@ -18,6 +18,7 @@ public interface CodiPlexusServiceInterface {
 	public String getNextCodi();
 	public void enviarSms(String telefon, String codigo);
 	public int getNumServits();
+	public int getNumServitsByDate(String strData); // data: dd/MM/yyyy HH:mm
 	public int getNumDisponibles();
 	public Date getDataDarrerServit();
 	public Date getDataDarrerLotBaixat();

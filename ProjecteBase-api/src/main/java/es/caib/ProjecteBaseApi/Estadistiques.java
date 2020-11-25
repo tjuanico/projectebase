@@ -30,8 +30,11 @@ public class Estadistiques extends HttpServlet {
 		String pattern = "dd/MM/yyyy HH:mm";
 		SimpleDateFormat simpleDateFormat = new SimpleDateFormat(pattern);
 	    
+		String data = request.getParameter("data");
+		
 	    Integer ns = 0;
 	    Integer nd = 0;
+	    Integer nsdata = 0;
 	    Date ds = new Date();
 	    Date dd = new Date();
 	    Date now = new Date();
@@ -40,6 +43,12 @@ public class Estadistiques extends HttpServlet {
 		nd = CodiServ.getNumDisponibles();
 		ds = CodiServ.getDataDarrerServit();
 		dd = CodiServ.getDataDarrerLotBaixat();
+
+		if (data != null)
+		{
+			nsdata = CodiServ.getNumServitsByDate(data);
+		}
+		
 		
 	    PrintWriter out = response.getWriter();
 	 
@@ -50,6 +59,10 @@ public class Estadistiques extends HttpServlet {
 	    	
 	    	out.println("{");
 	        out.println("   \"codisServits\" : "+ ns +", ");
+	        if (data != null)
+	        {
+	        	out.println("   \"codisServitsByDate\" : "+ nsdata +", ");	
+	        }
 	        out.println("   \"codisDisponibles\" : "+ nd +", ");
 	        out.println("   \"lastCodeTimestamp\" : \""+ simpleDateFormat.format(ds)+"\", ");
 	        out.println("   \"lastBulkDownloadTimestamp\" : \""+ simpleDateFormat.format(dd)+"\", ");
